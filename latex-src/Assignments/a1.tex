@@ -1,0 +1,168 @@
+\documentclass[nocolor]{report}
+\input{../preamble.tex}
+
+
+\begin{document}
+    \newpage
+    \subsection*{MAST90012 Measure Theory. Assignment 1.}
+\begin{center}
+    Sean Conlon, 1298668 \\
+    sconlon@student.unimelb.edu.au
+\end{center}
+
+
+% problem 1 
+\begin{ex}[Question 1.
+] Let $F$ denote the \textit{generalised Cantor set}, where the intervals removed at the $k$-th step have length $3^{-k}\alpha$ for $0<\alpha<1$. Show that $F$ is closed, $F^c$ is dense in $[0,1]$ and $m(F) = 1-\alpha$
+\end{ex}
+\begin{proof}
+We first note that $F$ can be written as 
+$$F = [0,1]\backslash \bigcup_{n=1}^{\infty}\bigcup_{i=1}^{2^n -1} I_{nm}$$
+where $I_{nm}$ are the $m=1,\dots, 2^{n-1}$ closed intervals of length $\alpha3^{-n}$. We now prove each of the following statements. \\
+\\
+\textit{F is closed}. $F$ is formed through a process of a removing closed sub-intervals from the interval $[0,1]$. As closed intervals remain closed under union and intersection, we conclude that $F$ must also be closed. \\
+\\
+\textit{$F^c$ is dense in $[0,1]$}. Let $x,y\in[0,1]$ such that $x<y$ and $y-x > \alpha/3^k$ Thus, no interval of length $\alpha/3^k$ contains the open interval $(x,y)$ as a subset. Therefore $(x,y)\not\subset F_k \implies (x,y)\not\subset F$. Therefore, there exists a $c\in(x,y)$ such that $c\notin F$. We can then conclude that $c\in F^c$ and thus $F^c$ is dense in $[0,1]$ \\
+\\
+\textit{F is measurable and has lebegsgue measure $m(F) = 1-\alpha$}. $F^c$  is comprised of the countable union of closed, measurable subintervals of $\mathbb{R}$ and is therefore measurable. Thus $F$ is itself measurable. To determine it's Lebesgue measure, we note that $F$ can be written as 
+$$F = [0,1]\backslash \bigcup_{n=1}^{\infty}\bigcup_{i=1}^{2^n -1} I_{nm}$$
+Where $I_{nm}$ are the pairwise disjoint intervals of length $|I_{nm}| = \alpha 3^{-n}$ It then follows 
+\begin{align*}
+    m\left([0,1]\backslash \bigcup_{n=1}^{\infty}\bigcup_{i=1}^{2^n -1} I_{nm} \right) &= m([0,1]) - m\left( \bigcup_{n=1}^{\infty}\bigcup_{i=1}^{2^n -1} I_{nm}\right) \\
+    &= 1 - \sum_{n=1}^{\infty}\sum_{m=1}^{2^n -1} m(I_{nm}) \\
+    &= 1 - \sum_{n=1}^{\infty}\sum_{m=1}^{2^n -1} |I_{nm}| \\
+    &= 1 - \sum_{n=1}^{\infty} \alpha \frac{2^{n-1}}{3^n} \\
+    &= 1 - \alpha
+\end{align*}
+
+
+\end{proof}
+
+% problem 2
+\newpage
+\begin{ex}[Question 2.]
+Prove that if $E\subset\mathbb{R}^d$ is measurable then $\delta E$ is measurable. Moreover, show that $$m(\delta E) = \delta m(E)$$
+\end{ex}
+\begin{proof} 
+For notational convenience, we define $\Delta := \delta_1 \time \dots \delta_d$ and
+first note that if $Q$ is a (closed) cube such that $Q = [a_1, b_1] \times \dots \times [a_d, b_d]$ then $\delta Q = [\delta_1a_1, \delta_1 b_1] \times \dots \times [\delta_d a_d, \delta_d b_d]$ with Lebesgue measure 
+\begin{align*}
+    m(\delta Q) &= \prod_{i=1}^{d} \delta_i [a_i - b_i] \\
+    &= \Delta |Q|
+\end{align*}
+We now proceed with the proof. Let $E$ be a measurable set, so that there exists an open set $U$ such that $E\subset U$ and 
+$$m^*(U\backslash E) \leq \frac{\varepsilon}{\Delta}$$
+Clearly, we  have $E\subset U \implies \delta E\subset \delta U$ with $\delta U$ an open set. It then follows from the definition of the outer measure
+\begin{align*}
+    m^*(\delta U \backslash \delta E) &= \inf \left\{ \sum_{j=1}^{\infty} m^*(\delta Q_j)  \hspace{3mm} \bigg| \hspace{3mm} U\backslash E \subset\bigcup_{j=1}^{\infty} Q_j \right\} \\
+    &= \inf \left\{ \Delta\sum_{j=1}^{\infty} |Q_j|  \hspace{3mm} \bigg| \hspace{3mm} U\backslash E \subset\bigcup_{j=1}^{\infty} Q_j \right\} \\
+    &= \Delta m(U\backslash E) \\
+    &\leq \Delta \frac{\varepsilon}{\Delta} = \varepsilon
+\end{align*}
+And thus $\delta E$ is measurable. As we have somewhat shown above, we can determine the Lebesgue measure of a measurable set $\delta E$ by 
+\begin{align*}
+    m(\delta E) &= \inf \left\{ \sum_{j=1}^{\infty} m^*(\delta Q_j)  \hspace{3mm} \bigg| \hspace{3mm} U\backslash E \subset\bigcup_{j=1}^{\infty} Q_j \right\} \\
+    &= \inf \left\{ \Delta\sum_{j=1}^{\infty} |Q_j|  \hspace{3mm} \bigg| \hspace{3mm} U\backslash E \subset\bigcup_{j=1}^{\infty} Q_j \right\} \\
+    &= \Delta m^*(E)
+\end{align*}
+\end{proof}
+
+
+% problem 3
+\newpage
+\begin{ex}[Question 3. a] For each subset $E$ of $\mathbb{R}$ the \textbf{outer Jordan content} $J^*(E)$ of $E$ is defined by
+$$J^*(E) = \inf\sum_{j=1}^{N}|I_j|$$
+where the infimim is taken over every \textit{finite} covering $E\subset \cup_{j=1}^{N}I_j$ by closed intervals $I_j$. \\
+\\
+Prove that $J^*(E) = J^*(\Bar{E})$ for every set $E$, where $\Bar{E}$ denotes the closure of $E$.
+\end{ex}
+\begin{proof} We first show that $J^*(E) \leq J^*(\Bar{E})$.\\ 
+\\
+Let $E\subset\mathbb{R}$ be an open set, and $\{I_j\}_{j=1}^{N}$ a covering of its closure, $\subset\Bar{E}$. Since $E\subset\Bar{E}$, $\{I_j\}_{j=1}^{\infty}$ is a covering of $E$ also, thus $J^*(E)\leq J^*(\Bar{E})$. \\
+\\
+We now show that $J^*(E) \geq J^*(\Bar{E})$. Let $I = \{I_j\}_{j=1}^{N}$ be a covering of $E$. By contradiction, suppose that $\bar{I}$ does not cover $\Bar{E}$. Then, there must exist $x\in E$ such that $x\nin \Bar{I}$. By defintion, $\Bar{E} = E \cup E^*$ where $E^*$ is the set of limit points of $E$. Thus, for all $\varepsilon>0$ $(x-\varepsilon, x+\varepsilon)\cap E = \emptyset$ but $E\subset\Bar{I}$ which therefore implies $(x-\varepsilon, x+\varepsilon)\cap \Bar{I} \neq \emptyset$ and therefore $x$ is a limit point of $\Bar{I}$. \\
+\\
+However, as $\bar{I}$ is a finite union of closed intervals, $\bar{I}$ is closed and contains all of its limit points. Thus, $x\in\bar{I}$ is a contradcation. Therefore $E\subset I$ then $\bar{E}\subset\bar{I}$ which implies $J^*(E)\geq J^*(\bar{E})$.
+\end{proof}
+\begin{ex}[Question 3. b]
+    Demonstrate that there exists a subset $E\subset[0,1]$ such that $J^*(E)=1$ and $m^*(E)=0$
+\end{ex}
+\begin{proof}
+     An often useful set to consider in analysis is $I = \mathbb{Q}\cap[0,1]$. By the countability of $\mathbb{Q}$, $I$ is clearly a countable, proper subset of $[0,1]$. Using the fact that $\mathbb{Q}$ is dense in $\mathbb{R}$ we have 
+$$J^*(I) = J^*(\bar{I}) = J^*([0,1]) = 1$$
+Moreover, since $I$ is the set of rationals within $[0,1]$, we can express $I$ as  $I = \cup_{q\in \mathbb{Q}: 0\leq q\leq 1}\{q\}$ Using the subadditivity of the Lebesgue outer measure we have 
+$$0\leq m^*(I) \leq \sum_{q\in I} m^*(\{q\}) = 0$$
+\end{proof}
+
+
+
+   
+
+
+
+
+
+
+% problem 4
+\newpage
+\begin{ex}[Question 4.] Suppose $E$ is a measurable subset of $\mathbb{R}^d$ such that $m(E)<\infty$, $E_1, E_2$ are subsets of $\mathbb{R}^d$ such that 
+$$E = E_1 \cup E_2 \hspace{5mm} E_1\cap E_2 = \emptyset$$
+Show that if $m(E) = m^*(E_1) + m^*(E_2)$ then $E_1, E_2$ are measurable sets. In particular, when $E\subset Q$ for some closed cube, $E$ is measurable if and only if $m(Q) = m^*(E) + m^*(Q\backslash E)$
+\end{ex}
+\begin{proof}
+To prove the first statement, let $\varepsilon>0$ and $U_i$ an open subset of $\mathbb{R}^d$ such that for $i=1,2$ 
+$$m^*(E_i)\leq m^*(U_i) < m^*(E_i) + \frac{\varepsilon}{2}$$
+This implies $E \subset U_1 \cup U_2$ and by subadditivity 
+\begin{align*}
+    m^*(E) &\leq m^*(U_1 \cup U_2) \\
+    & = m^*(U_1) + m^*(U_2) - m^*(U_1 \cap U_2)
+\end{align*}
+Note that we can rearrange the above so that 
+\begin{align*}
+    m^*(U_1 \cap U_2) &\leq m^*(U_1) + m^*(U_2) - m^*(E) \\ 
+    &= m^*(U_1) + m^*(U_2) - m^*(E_1) - m^*(E_2) \\
+    &< \varepsilon
+\end{align*}
+Finally, we note that $U_i \backslash E_i \subset (U_1 \cap U_2) \cup ((U_1 \cup U_2)\backslash E)$ and it follows that 
+\begin{align*}
+    m^*(U_i \backslash E_i) &\leq m^*(U_1 \cap U_2) + m^*(U_1 \cup U_2) - m^*(E) \\
+    &\leq \varepsilon + m(U_1) - m(E_1) + m(U_2) - m(E_2) \\
+    &= 2\varepsilon
+\end{align*}
+As $\varepsilon>0$ is arbitrary, we have shown that $E_1, E_2$ are measurable.
+\end{proof}
+\begin{proof}
+    We now prove the latter statement: If $E\subset Q$ for some closed cube, $E$ is measurable if and only if $m(Q) = m^*(E) + m^*(Q\backslash E)$. \\
+    \\
+    $(\Rightarrow)$. \\
+    Let $E$ be measurable, and $Q$ a cube covering $E$. By subadditiviy we have 
+    $$m^*(Q) \leq m^*(E) + m^*(Q\backslash E)$$
+    To show the inverse inequality, we note that since $E$ is measurable, $\exists$ an open set $U$ such that $m^*(U \backslash E) \leq \varepsilon$. In particular, we choose $\varepsilon = m^*(U) - m^*(E) > 0$ as $E\subset U$ so that 
+    $$m^*(U\backslash E) + m^*(E) \leq m^*(U)$$
+    We now let $Q$ be a covering of $U$ such that $E\subset U\subseteq Q$ and by monotonicity we have 
+    \begin{align*}
+        m^*(U\backslash E) + m^*(E) \leq m^*(Q \backslash E) +m^*(E) \leq m^*(Q)
+    \end{align*}
+    Thus we have proven the claim. \\
+    \\
+    $(\Leftarrow)$. \\
+    Let $E\subset Q$ such that $m(Q) = m^*(E) + m^*(Q\backslash E)$, we aim to show that $E$ is measurable. \\
+    \\
+    Let $\varepsilon>0$ and $U$ be an open covering of $Q$ such that $E\subset Q\subseteq U$ such that 
+    \begin{align*}
+        m^*(U)\leq m^*(E) + \varepsilon
+    \end{align*}
+    It now follows that 
+    \begin{align*}
+        m^*(Q) &= m^*(E) + m^*(Q\backslash E) \\
+               &\leq m^*(E) + m^*(U\backslash E) \\
+               &= m^*(U) 
+    \end{align*}
+    Combining the above with $(1)$ we find that 
+    $$m^*(U\backslash E) \leq \varepsilon$$
+    and therefore conclude that $E$ is measurable. \\
+\end{proof}
+
+
+
+\end{document}

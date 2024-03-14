@@ -1,0 +1,28 @@
+\lesson{1}{28 Feb 2023}{Review of Linear Models}
+
+These notes are about linear models; specifically generalised linear models and applying them to a number of data sets.
+
+
+\begin{definition}[Random Sample] The random variables $X_1, \dots, X_n$ are called a \textbf{random sample} of size n from a population with cdf or pdf/pmf $F(x)$ or $f(x)$ if
+\begin{enumerate}
+    \item $X_1,\dots, X_n$ are mutually independant
+    \item The marginal cdf/pdf/pmf of each $X_i$ is the same as $F(x)$ or $f(x)$
+\end{enumerate}
+\end{definition}
+In particular, the distribution $f(x)$ will be paramerterised, leading us to write $f(x | \theta)$. In the first part of our studies, we focus on how to construct \textit{good} estimators for such parameters
+
+\subsection*{Method of Moments}
+
+\begin{definition}[Method of Moments Estimate]
+    let $X_1, \dots, X_n$ be a random sample from a population with distribution $f(x | \theta_1, \dots, \theta_k)$. 
+    \begin{enumerate}
+        \item $\mu_j = E(X_1^j)$ is the $j$-th population moment
+        \item $m_j = n^{-1}\sum_{i=1}^{n} X_i^j$ is the $j$-th sample moment 
+        \item The Method of Moments Estimator (MME) $\Tilde{\theta_1}, \dots, \Tilde{\theta_k}$ of $\theta_1, \dots, \theta_k$ are the solutions to the following systems of equations: 
+        \begin{align*}
+            & m_1 = \mu_1 \\
+            & \hspace{7mm} \vdots \\
+            & m_k = \mu_k
+        \end{align*}
+    \end{enumerate}
+\end{definition}

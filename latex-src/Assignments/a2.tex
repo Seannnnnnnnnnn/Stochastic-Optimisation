@@ -1,0 +1,149 @@
+\documentclass[nocolor]{report}
+\input{../preamble.tex}
+
+
+\begin{document}
+    \newpage
+    \subsection*{MAST90012 Measure Theory. Assignment 2.}
+\begin{center}
+    Sean Conlon, 1298668 \\
+    sconlon@student.unimelb.edu.au
+\end{center}
+
+
+% problem 1 
+\begin{ex}[Question 1a.] Let $E\subset\mathbb{R}$ be an interval and $f: E\rightarrow\mathbb{R}$ be a a monotone increasing function on $E$. Show that $f$ is a measurable function. 
+\end{ex}
+\begin{proof}
+    Recall that a function $f$ is measurable if for all $c\in\mathbb{R}$ the preimage: $f^{-1}((-\infty, c)) = \{x\in E: f(x) < c \}$ is measurable. Additionally, we note that any interval is measurable; as any interval $I = (a,b)$ is covered by the open interval $U = (a-\varepsilon/2, b+\varepsilon/2)$ with $m(U\backslash I) = \varepsilon$. \\
+    \\
+    As $E$ is an interval of $\mathbb{R}$ then we may assume without loss of generality, $E$ is an open interval of the form $E = (a,b)$ for some fixed constants. For all $c\in\mathbb{R}$ the preimage falls into one of the following cases:\begin{itemize}
+        \item \textbf{Case 1:} $c < a$, abd then $f(c) < f(a)$ in which case the preimage is the empty set, which is measurable as it is a null set. 
+        \item \textbf{Case 2:} $c > b$, in which case the preimage is the entire interval $E$, and is therefore measurable. 
+        \item \textbf{Case 3:} $a \leq c \leq b$ in which case the preimage is the shorter interval $(a, c]$ which is itself measurable as it is an interval. 
+    \end{itemize}
+    Thus we conclude as the preimage is measurable in either case, then $f$ must be a measurable function.
+\end{proof}
+\begin{ex}[Question 1b.] Let $E\subset\mathbb{R}$ be measurable and $g: E\rightarrow\mathbb{R}$ be a function on $E$ satisfying $g(x)\leq g(y)$ for any $x<y$ on $E$. Show that $g$ is a measurable function. 
+\end{ex}
+\begin{proof}
+    In the previous exercise, we have shown that strictly increasing functions on measurable sets are measurable. Similarly, within lectures we have developed the theory that sequences of measurbale functions converge pointwise to measurable functions. We define the sequence of functions $\{f_n\}_{n=1}^{\infty}$ where 
+    $$f_n (x) = g(x) + \frac{x}{n}$$
+    Clearly, $f$ is measurable as a linear combination of measurable functions and for any $x<y$ we have $f_n(x) < f_n(y)$. Finally, we note that $f_n \rightarrow g$ as $n\rightarrow\infty$. As each $f_n$ is measurable, then its limit $g$ must also be measurable, thereby completing the proof.
+\end{proof}
+
+\newpage
+\begin{ex}[Question 2.] Let $E\subset\mathbb{R}^d$ be measurable, and $f_n \rightarrow f$ pointwise on $E$. Show that there exists a countable collection of sets $\{A_n\}$ such that 
+$$E = A_0 \cup \bigcup_{n=1}^{\infty} A_n$$
+and $m(A_0) = 0$ and $f_n\rightarrow f$ uniformally on $A_n$
+\end{ex}
+\begin{proof}
+First, we assume that $m(E)<\infty$ and $f_n\rightarrow f$ pointwise a.e on $E$. By Egorov Theorem, there exists a closed set $A_n$ such that 
+$$m(E\backslash A_n) \leq 1/n \hspace{20mm} (1)$$ 
+and $f_n \rightarrow f$ uniformly on $A_n$. Note that $(1)$ implies that $A_n \subset A_{n+1}$, so by defining $A$ as the union, one has $A_n \nearrow A$. By the properties of the Lebesgue measure, one also has 
+\begin{align*}
+    m(E\backslash A) &= m\left(E\backslash \bigcup_{n=1}^{\infty}A_n\right) \\
+                     &= \lim_{n\rightarrow\infty} m(E\backslash A_n) \\
+                     &\leq \lim_{n\rightarrow\infty} \frac{1}{n} = 0. \hspace{20mm} (2)
+\end{align*}        
+Which implies that $E = A_0 \cup \bigcup_{n=1}^{\infty}A_n$, where $A_0$ is a set of measure 0 to ensure equality in $(2)$. \\
+\\
+In the case where $E$ is not of finite measure, we simply repeat the argument on $E_n = E \cap_{n=1}^{\infty}B_0(n)$, where $B_0(n)$ is the ball of radius $n$ centered at the origin. 
+\end{proof}
+
+
+\begin{ex}[Question 3.] By citing a specific example, show that Monotone Convergance Theorem may fail in that case that $f_n \searrow f$. That is, show that there exists a sequence of measurable functions $\{f_n\}$ such that $f_n \searrow f$ and 
+$$\int f \neq \lim_{n\rightarrow\infty}\int f_n$$
+\end{ex}
+\begin{proof}
+Consider the sequence of functions defined on $[0, \infty)$ by 
+\begin{equation}
+f_n(x)
+    \begin{cases}
+        \frac{1}{n} & \text{if } x \leq n\\
+        0 & \text{otherwise } 
+    \end{cases}
+\end{equation}
+Then clearly each $f_n$ is clearly measurable and integrates to 1 over its domain, but $f_n \searrow 0$ and thus,  
+$$\int f \neq \lim_{n\rightarrow\infty}\int f_n$$
+\end{proof}
+
+
+\begin{ex}[Question 4a.] Let $f\geq 0$ and for each $k\in\mathbb{N}$ define $E_k = \{x\in\mathbb{R}^d: f(x)\geq 2^k\}$ and $F_k = \{x\in\mathbb{R}^d : 2^k < f(x) \leq 2^{k+1}\}$  show that 
+$$\underbrace{\text{$f$ is integrable}}_{(1)} \iff \underbrace{\sum_{k=-\infty}^{\infty}2^k m(F_k) < \infty}_{(2)} \iff  \underbrace{\sum_{k=-\infty}^{\infty}2^{k} m(E_k) < \infty}_{(3)}$$
+\end{ex}
+\begin{proof}
+We prove the claim througha a series of logical implications. \\
+\\
+$(1)\implies(2)$. To see this, one simply writes
+\begin{align*}
+    \sum_{k=-\infty}^{\infty}2^{k} m(F_k) &= \sum_{k=-\infty}^{\infty}\int_{F_k} 2^k \\
+    &\leq \sum_{k=-\infty}^{\infty} \int_{F_k} f \\
+    &= \int_{\mathbb{R}^d} f < \infty
+\end{align*}
+$(2)\implies(1)$. In similar fashion, one writes
+\begin{align*}
+    \frac{1}{2}\int_{\mathbb{R}^d} f &= \frac{1}{2} \sum_{k=1}^{\infty} \int_{F_k} f \\
+    &\leq \frac{1}{2}\sum_{k=-\infty}^{\infty}\int_{F_k}2^{k+1} \\
+    &= \frac{1}{2}\sum_{k=-\infty} 2^{k+1}m(F_k) = \sum_{k=-\infty} 2^{k}m(F_k) < \infty
+\end{align*}
+$(3)\implies(2).$ Comes as a consequence of monotonicity. As for all $k\in\mathbb{N}$ $F_k\subset E_k$ and so
+$$\sum_{k=-\infty}^{\infty}2^k m(F_k) \leq \sum_{k=-\infty}^{\infty}2^k m(E_k) < \infty$$
+$(2)\implies(3)$ We first note that $\{f > 0\} = \cup_{k=-\infty}^{\infty} F_k$ and so $E_k = \cup_{n=k}^{\infty}F_n$ and so, by monotonicity
+\begin{align*}
+    \sum_{k=-\infty}^{\infty}2^k m(E_k) &\leq \sum_{k=-\infty}^{\infty}\sum_{n=k}^{\infty}2^k m(F_n) \\
+    &= \sum_{n=-\infty}^{\infty}\sum_{k=-\infty}^{n}2^k m(E_k) \\
+    &=  \sum_{n=-\infty}^{\infty} 2^n m(F_n) \sum_{k=-\infty}^{n} 2^{k-n} \\
+    &\leq  \sum_{n=-\infty}^{\infty} 2^n m(F_n) < \infty
+\end{align*}
+Where we swap the order of the summation in the second line through Fubini's theorem. \\
+\end{proof}
+
+\begin{ex}[Question 4b.] Let 
+    \begin{equation}
+f(x)
+    \begin{cases}
+        |x|^{-a} & \text{if } |x|\leq1\\
+        0 & \text{otherwise } 
+    \end{cases}
+\end{equation}
+show that $f$ is integrable on $\mathbb{R}^d$ if and only if $a < d$.
+\end{ex}
+\begin{proof}
+    For each $k$ we have  
+\begin{equation}
+E_k = \{f > 2^k\} = 
+    \begin{cases}
+        |x| \leq 1 & k< 0 \\
+        |x| \leq 2^{-k/a} & k\geq 0
+    \end{cases}
+\end{equation}
+and so 
+\begin{equation}
+m(E_k) = 
+    \begin{cases}
+        2^d & k< 0 \\
+        2^d 2^{-kd/a}  & k\geq 0
+    \end{cases}
+\end{equation}
+from exercise 4a, we have $f$ is integrable if and only if 
+\begin{align*}
+    \sum_{k=-\infty}^{\infty} 2^k m(E_k) &= \sum_{k=-\infty}^{0}2^k2^d + \sum_{k=1}^{\infty} 2^k2^d 2^{-kd/a} \\
+    &= 2^{d+1} + 2^d \sum_{k=-\infty}^{\infty}2^{(1-d/a)k} < \infty
+\end{align*}
+Which occurs only when the summation in the final line converges. This occurs precisely when $a < d$. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

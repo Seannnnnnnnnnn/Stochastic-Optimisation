@@ -1,0 +1,197 @@
+\documentclass[nocolor]{report}
+\input{../preamble.tex}
+
+
+\begin{document}
+    \newpage
+    \subsection*{\centering MAST90012 Measure Theory. Assignment 3.}
+\begin{center}
+    Sean Conlon, 1298668 \\
+    sconlon@student.unimelb.edu.au
+\end{center}
+
+
+% problem 1 
+\begin{ex}[Question 1a] We consider convolution and $L^p$ functions with respect to the Lebesgue measure $m$ on $\mathbb{R}^d$. Let $\phi_1$ be a smooth, non-negative function which is supported on the unit ball $B_1(0)$ and satisfies $\int \phi_1 dm = 1$. For $\sigma>0$ we define the $\phi_\sigma = \sigma^{-d} \phi_1(x/\sigma)$ For $1\leq p <\infty$ and any $f\in L^p(\mathbb{R}^d)$ and $\sigma > 0$ we define
+$$f_\sigma (x) = \int_{\mathbb{R}^d} f(y)\phi_\sigma(x-y)dy$$
+Now, for all $f\in L^p$ show that $\|f_\sigma\|_{L^p}\leq\|f\|_{L^p}$
+\end{ex}
+\begin{proof}
+    For let $\frac{1}{p} + \frac{1}{q}=1$ and for a general $f,g$ we have 
+    \begin{align*}
+        |(f*g)(x)| &\leq \int |g(y)f(x-y)|dy \\
+                   &\leq \int |g(y)f(x-y)^{\frac{1}{p}}||f(x-y)|^{\frac{1}{q}}dy \\
+                   &\leq \left(\int|f(x-y)|dy\right)^{\frac{1}{q}} \left(\int|g(y)|^p |f(x-y)|\right)^{\frac{1}{p}} \quad \text{By Holder} \\
+                   &= \|f\|_1^{\frac{1}{q}}  \left(\int|g(y)|^p |f(x-y)|dy\right)^{\frac{1}{p}} 
+    \end{align*}        
+    Therefore we have 
+    \begin{align*}
+         \int |(f*g)(x)|^p dx &\leq \|f\|_1^{\frac{p}{q}}  \int \int|g(y)|^p |f(x-y)|dydx \\
+         &= \|f\|_1^{\frac{p}{q}}  \int \int|g(y)|^p |f(x-y)|dx dy \quad \text{By Fubini} \\
+         &= \|f\|_1^{\frac{p}{q}} \|f\|_1 \|g\|_p^p
+    \end{align*}
+    Therefore taking the $p^{th}$ root of both sides yields
+    $$\|f * g\|_p \leq \|f\|_1 \|g\|_p$$
+    We now consider the case of $f_\sigma(x) = (f*\phi_\sigma)(x) = (\phi_\sigma * f)(x)$ to have 
+    $$\|f_\sigma\| \leq \|f\|_p \|\phi_\sigma\|_1$$
+    Though by our assumptions on $\phi_\sigma$ and $\phi_1$ we have $\|\phi_\sigma\|\leq1 $ and so as claimed $\|f_\sigma\|_p\leq \|f\|_p$ .
+\end{proof}
+
+\begin{ex}[Question 1b] Show that for each $f\in L^p(\mathbb{R}^d)$ 
+$$\lim_{\sigma \rightarrow 0^+}\|f_\sigma - f\|=0$$
+\end{ex}
+\begin{proof}
+    We consider  
+    \begin{align*}
+        |f_\sigma(x) - f(x)| &= |(f*\phi_\sigma)(x) - f(x)| \\
+        &\leq \int_{\mathbb{R}^d} |f(x-y)-f(x)|\phi_\sigma(y)dy
+    \end{align*}
+    Now applying Jensen's inequality to the above we have 
+    \begin{align*}
+         |(f*\phi_\sigma)(x) - f(x)|^p &\leq \left( \int_{\mathbb{R}^d} |f(x-y)-f(x)|\phi_\sigma(y)dy \right)^p  \\
+         &\leq  \int_{\mathbb{R}^d} |f(x-y)-f(x)|^p\phi_\sigma(y)dy
+    \end{align*}
+    Now further integrate over $x$ and apply Fubinis theorem to yield 
+    \begin{align*}
+        \|f_\sigma - f\|_p^p &\leq  \int_{\mathbb{R}^d}\int_{\mathbb{R}^d} |f(x-y)-f(x)|^p\phi_\sigma(y)dydx \\
+        &=   \int_{\mathbb{R}^d}\left(\int_{\mathbb{R}^d} |f(x-y)-f(x)|^p dx\right) \phi_\sigma(y)dy \\
+        &= \int_{\mathbb{R}^d}\|f(x-y) -f(x)\|_p^p \phi_\sigma(y)dy
+    \end{align*}
+    Now, one defines $g(y) := \|f(x-y) - f(x)\|^p_p$ and notes that $g(0) = 0$. Now we may write
+    \begin{align*}
+        \|f_\sgma - f\|^p_p &\leq \int_{\mathbb{R}^d} g(y)\phi_\sigma(y)dy \\
+        &= \int_{\mathbb{R}^d} g(y)\sigma^{-d}\phi\left(\frac{y}{\sigma}\right)dy \\
+        &= \int_{\mathbb{R}^d} g(\sigma z)\sigma^{-d}\phi(z)dz \hspace{10mm} z:= \frac{y}{\sigma} 
+    \end{align*}
+    Hence, as $\sigma\rightarrow0$ we have $g(\sigma z)\phi(z) \rightarrow g(0)\phi(z) = 0$. Moreover, we can show that $g$ is bounded by: 
+    $$g(y) = \|f(x-y)-f(x)\|^p_p \leq (\|f(x-y)\|_p + \|f(x)\|_p)^p = (2\|f\|)^p$$
+    The boundedness of $g$. Combined with the integrability of $\phi$ mean we may apply the Dominated Convergence Theorem to show that 
+    $$\lim_{\sigma \rightarrow 0} \int_{\mathbb{R}^d} g(\sigma z)\phi(z)dz = 0$$
+    Which implies the claim and thus completes the proof.
+\end{proof}
+
+\newpage
+\begin{ex}[Question 2a] 
+Let $(X,\mathcal{A})$ be a measurable space and $\mu^*$ be an outer measure on $X$. Define the following outer measure $\mu^+$ as follows. For any $E\subset X$ we have 
+$$\mu^+(E) = \inf\left\{ \sum_{j=1}^{\infty}\mu^*(E_j)  \big| E\subseteq\bigcup_{j=1}^{\infty}E_j \quad E_j \text{ is $\mu^*$ Caratheodory measurable}\right\}$$
+Show that for all $E\subseteq X$ we have $\mu^*(E)\leq\mu^+(E)$
+\end{ex}
+\begin{proof}
+    Let $E\subseteq X$ such that $E\subseteq \cup_{j=1}^{\infty} E_j$ for $\{E_j\}_{j=1}^{\infty}$ $\mu^*$ Caratheodory measurable in $X$. By the monotonicity and subadditivity of $\mu^*$ one has: 
+    \begin{align*}
+        \mu^*(E) \leq \mu^*\left( \bigcup_{j=1}^{\infty} E_j\right) \leq \sum_{j=1}^{\infty}\mu^*(E_j)
+    \end{align*}
+    Now, take $\{E_j\}_{j=1}^{\infty}$ to be the \textit{infimum} over the possible collection of sets with respect the outer-measure $\mu^*$ such that $E\subseteq \cup_{j=1}^{\infty} E_j$. That is: 
+    \begin{align*}
+         \mu^*(E) \leq \sum_{j=1}^{\infty}\mu^*(E_j) &= \inf\left\{ \sum_{j=1}^{\infty}\mu^*(E_j) \big | E\subseteq\bigcup_{j=1}^{\infty} E_j\right\} \\
+         &= \mu^+(E)
+    \end{align*}
+    Thus, $\mu^*(E)\leq\mu^+(E)$ as claimed. 
+\end{proof}
+\begin{ex}[Question 2b] 
+    Given a set $E\subset X$, show that $\mu^*(E) = \mu^+(E)$ if and only if, there exists a $\mu^*$-measurable set $A$ such that $E\subseteq A$ with $\mu(A) = \mu^*(A)$
+\end{ex}
+\begin{proof} $(\Rightarrow)$. \\
+Suppose $\mu^*(E) = \mu^+(E)$ then 
+$$\mu^*(E) =  \inf\left\{ \sum_{j=1}^{\infty}\mu^*(E_j)  \big| E\subseteq\bigcup_{j=1}^{\infty}E_j\right\} \quad (1)$$
+Where $\{E_j\}_{j=1}^{\infty}$ are $\mu^*$-Caratheodory measurable. let $\{E_j\}_{j=1}^{\infty}$ be a covering of $E$ such that equality in $(1)$ holds. Moreover, assume that $\{E_{j, i}\}_{i=1}^{\infty}$ is a covering of each $E_j$ such that each $E_{j, i}$ is $\mu^*$-measurable and 
+$$\mu^*(E_{j, i}) \leq \sum_{i=1}^{\infty} \mu^*(E_j) +\frac{\varepsilon}{2^j}$$
+For arbitrary $\varepsilon>0$. Now, set $A = \cup_{j=1}^{\infty}\cup_{i=1}^{\infty}E_{j, i}$. As $E = \cup_{j=1}^{\infty}E_j$ we therefore have $E\subseteq A$. Moreover, by the monotonicity of $\mu^*$ we have 
+\begin{align*}
+    \mu^*(E) \leq \mu^*(A) &\leq \sum_{j=1}^{\infty}\sum_{i=1}^{\infty}\mu^*(E_{j,i}) \\
+    &\leq \sum_{j=1}^{\infty} \mu^*(E_j) +\frac{\varepsilon}{2^j} \\
+    &= \varepsilon + \mu^*(E)
+\end{align*}
+Where the equality in the final line comes from choice of $\{E_j\}$ such that $(1)$ holds. Taking $\varepsilon\rightarrow0^+$ we conclude that $\mu^*(E) = \mu^*(A)$. Moreover, as $A$ is chosen to be a countable union of $\mu^*$-Caratheodory measurable sets, we conclude that $A$ is itself measurable. By our previous theorem, we can take measure $\mu$ on the measurable space $(X,\mathcal{A})$ by taking $\mathcal{A}$ to be the set of Caratheodory measurable sets and $\mu = \mu^* |_{\mathcal{A}}$ to conclude that $\mu(A) = \mu^*(A)$ as required.  
+\end{proof}
+\begin{proof}$(\Leftarrow)$. \\
+    Let $\mathcal{M}$ be $\sigma$-Algebra formed by the $\mu^*$- measurable subsets of $X$ and thus $\mu = \mu^*|_{\mathcal{M}}$ is a measure. Let $A\in \mathcal{M}$ such that $\mu(A) = \mu^*(E)$ and $E\subseteq A$. \\
+    \\
+    let $\{A_j\}_{j=1}^{\infty}$ be the infimum over $\mu^*$- measurable subsets of $X$ such that $A\subseteq \cup_{j=1}^{\infty}A_j$. Now define the collection of pairwise-disjoint sets $\{A^\prime_j\}^{\infty}_{j=1}$ by:
+    $$A^\prime_1 = A_1 \quad \quad A^\prime_j = A_j \backslash \bigcup_{k=1}^{j-1}A_j$$
+    so that $\{A_j^\prime\}$ is also a covering of $A$ with equal measure to $\{A_j\}$. Moreover, one notes that as $A^\prime_j$ is a countable intersection and union of $\mu^*$-measurable sets $\{A_j\}$, then $\{A^\prime_j\}$ is also $\mu^*$-measurable. It now follows 
+    \begin{align*}
+        \mu^+(E) & \leq \mu^+(A) \hspace{12mm} \text{by monotonicity of } \mu^+ \\
+        &= \sum_{j=1}^{\infty}\mu^*(A_j^\prime) \\
+        &= \sum_{j=1}^{\infty}\mu(A_j^\prime) \hspace{10mm} \text{as for any } E\in\mathcal{M}, \mu^*(E) = \mu(E) \\
+        &= \mu(A) = \mu^*(E)
+    \end{align*}
+    Hence we have shown $\mu^+(E)\leq\mu^*(E)$, and in combination with exercise 2a, we conclude $\mu^+(E) = \mu^*(E)$.
+\end{proof}
+
+
+\begin{ex}[Question 3a] Consider the measurable space $([0,1],\mathcal{B})$, where $\mathcal{B}$ is the collection of Borel Subsets of $[0,1]$. let $m:\mathcal{B}\rightarrow[0,\infty]$ be the Lebesgue measure and let $c:\mathcal{B}\rightarrow[0,\infty]$ be the counting measure. We consider the diagonal
+$$D = \{(x,y)\in[0,1]\times[0,1]: x=y\}$$
+Show that $D$ is  Carath´eodory measurable with respect to the canonical $(m\times c)^*$ outer measure.
+\end{ex}
+\begin{proof}
+    Consider the family of sets $D_n$ given by: 
+    $$D_n = \bigcup_{k=0}^{n-1}\left[ \frac{k}{n}, \frac{k+1}{n}\right]\times \left[ \frac{k}{n}, \frac{k+1}{n}\right] $$
+    Hence, each $D_n$ is a countable union of $(m\times c)^*$-measurable intervals and is therefore, itself measurable. Moreover, 
+    $$D = \bigcap_{n=1}^{\infty}D_n$$
+    Hence, $D$ is a $R_{\sigma\delta}$ set over measurable sets, and is therefore itself measurable.
+\end{proof}
+\begin{ex}[Question 3b]
+    Let $f$ be the characteristic function of $D$, show that Fubini's theorem fails in this case.
+\end{ex}
+\begin{proof}
+    Let $I = [0,1]$ and $f(x,y) = \chi_D(x,y)$. We consider the integral
+    \begin{align*}
+        \int_I \int_I f(x,y) dc(y) dm(x) &=  \int_I\left( \int_I f(x,y) dc(y)\right) dm(x)\\
+        &=  \int_I\left( \int_I 1_{x}(y)dc(y)\right) dm(x) \\
+        &= \int_I 1 dm(x) \\
+        &= 1
+    \end{align*}
+    However, we also have 
+    \begin{align}
+        \int_{I\times I} \chi_D d(m\times c) = \infty
+    \end{align}
+    For a proof of $(1)$, suppose that $D$ is coverered by $\{A_k \times B_k\}_{k=1}^{\infty}$. Let $\{A_j\}_{j=1}^{M}$ be a subset of $\{A_k\}$ such that $m(A_j) = 0$. We can now define 
+    $$S = \bicup_{j=1}^{M}A_j$$
+    So that $m(S) = 0$ and $[0,1]\backslash S$ is uncountable so $c([0,1]\backslash S) = \infty$. Now define the set 
+    $$F = \{(x,y):  x=y, x,y\in[0,1]\backslash S\}$$
+    By definition $F\subseteq E$, and moreover $\{A_k\times B_k\}\backslash F$ is therefore also a covering of $F$. Let $(x,x)\in F$, then for some $k$ we have $x\in A_k$, $x\in B_k$
+    Hence, we may conclude that $[0,1]\backslash S \subseteq \cup_{k=1}^{\infty}B_k$. However, $[0,1]\backslash S$ is uncountable, and thus, there must be at least one $B_{k^\prime}$ in $\{B_k\}$ such that $c(B_{k^\prime}) = \infty$ and thus $\{A_k\times B_k\}$ must also have $(\mu\times c)(A_{k^\prime}\times B_{k^\prime}) = \infty$\\
+    \\
+    Finally, we note that we have shown in this exercise how Fubinis theorem can fail to hold in the case of one the measures, in this case, the counting measure $c$, failing to be $\sigma$-finite.
+\end{proof}
+
+
+\begin{ex}[Question 4] Prove the Uniqueness of the Jordan Decomposition Theorem. That is, let $\nu$ be a signed measure on the measurable space $(X,\mathcal{A})$. Show that there is a unique pair of mutually singlular measures $\nu^+$, $\nu^-$ on $(X,\mathcal{A})$ such that $\nu = \nu^+ - \nu^-$
+\end{ex}
+\begin{proof}
+    let $\nu = \nu^+ - \nu^-$ be a Jordan Decomposition of $\nu$ and let $(P, N)$ be a Hanh decomposition of $(X,\mathcal{A})$ with respect to signed measure $\nu$. We claim that for any $A\in\mathcal{A}$ we have 
+    \begin{align*}
+        & \nu^+(A) = \sup_{B\subset A, B\in \mathcal{A}} \nu(B) \\
+        &\nu^-(A) =  -\inf_{B\subset A, B\in \mathcal{A}} \nu(B)
+    \end{align*}
+    To prove the claim, let $B\in\mathcal{A}$ and $B\subset A$ then one have
+    \begin{align*}
+        \nu(B) &= \nu^+(B) - \nu^-(B) \\
+        &\leq \nu^+(B) \\
+        &\leq \nu^+(A) \\
+        &= \nu(A\cap P) 
+    \end{align*}
+    We now note by properties of the $\sigma$-Algebra $A\cap P\in\mathcal{A}$ and so by definition of the Jordan decomposition
+    $$\nu^+(A) = \nu(A\cap P)\leq \sup_{B\in\mathcal{A}, B\subseteq A}\nu (B)$$
+    Hence proving the first claim. The second claim for $\nu^-$ follows a similar proof, 
+    \begin{align*}
+        -\nu(B) &= \nu^-(B) - \nu^+(B) \\
+                &\leq \nu^-(B) \\
+                &\leq \nu^-(A)
+    \end{align*}
+    And with similar argument 
+    $$\nu^-(A) = -\nu(A\cap N) \leq - \inf_{B\subset A, B\in \mathcal{A}} \nu(B)$$
+    Having proved the claim, the uniquness of the Jordan Decomposition follows easily. Suppose there are two Jordan decompositions of the signed measure $(\nu^+_1, \nu^-_1)$ and $(\nu^+_2, \nu^-_2)$. Then by our claim for any set $A\in \mathcal{A}$
+    \begin{align*}
+       & \nu_1^+(A) =  \sup_{B\subset A, B\in \mathcal{A}} \nu(B) = \nu_2^+(A) \\
+       & \nu_1^-(A) =  -\inf_{B\subset A, B\in \mathcal{A}} \nu(B) = \nu_2^-(A)
+    \end{align*}
+    So we conclude that the decompositions are equal.
+\end{proof}
+
+
+
+
+
+\end{document}
